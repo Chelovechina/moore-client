@@ -62,7 +62,7 @@ const handleDelete = () => {
   justify-content: space-between;
 
   .info {
-    display: flex;
+    display: flex !important;
     gap: 70px;
     align-items: center;
   }
