@@ -1,13 +1,8 @@
 <template>
   <select @change="onChange" class="select">
     <option key="Фильтр" value="Фильтр" placeholder="Фильтр" selected></option>
-    <option
-      v-for="sort in store.state.sort"
-      :key="sort.name"
-      :value="sort.name"
-      class="option"
-    >
-      {{ sort.name }}
+    <option v-for="sort in store.state.sort" :key="sort" :value="sort" class="option">
+      {{ sort }}
     </option>
   </select>
 </template>

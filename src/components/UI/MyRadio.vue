@@ -7,12 +7,16 @@
 <script setup lang="ts">
 import { useStore } from "vuex";
 
-const props = defineProps<{ value: string; status: string }>();
+const props = defineProps<{ value: string; status: string; type: string }>();
 const store = useStore();
 
 const handleClick = (e: Event) => {
   const label = e.target as HTMLLabelElement;
-  store.commit("setCurrentStatus", label.textContent);
+  if (props.type === "create") {
+    store.commit("setCurrentCreateStatus", label.textContent);
+  } else {
+    store.commit("setCurrentStatus", label.textContent);
+  }
 };
 </script>
 

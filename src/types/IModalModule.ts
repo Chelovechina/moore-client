@@ -1,6 +1,14 @@
 import { IApartment } from "./IApartment";
 
 export interface IModalModule {
-  isModalOpened: boolean;
-  apartmentChange: { modalType: "Изменить"; currentApartment: IApartment };
+  apartmentChange: {
+    isModalOpened: boolean;
+    modalType: "Изменить";
+    currentApartment: IApartment;
+  };
+  createApartment: {
+    isModalOpened: boolean;
+    modalType: "Добавить квартиру";
+    currentApartment: any;
+  };
 }

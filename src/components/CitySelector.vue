@@ -1,11 +1,7 @@
 <template>
   <ul class="cities">
-    <CityItem
-      v-for="city in store.state.cities"
-      :name="city.name"
-      :isActive="currentCity.name === city.name"
-      :key="city._id"
-    />
+    <CityItem v-for="city in store.state.cities" :name="city.name" :isActive="currentCity.name === city.name"
+      :key="city._id" />
   </ul>
 </template>
 

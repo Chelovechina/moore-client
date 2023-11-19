@@ -71,7 +71,7 @@ export default createStore({
         commit("setErrorMessage", e);
       }
     },
-    getAllCities: async ({ state, commit }) => {
+    getAllCities: async ({ commit }) => {
       try {
         commit("setStatus", "loading");
         const response = await api.get("/apartments/cities", {
@@ -86,7 +86,7 @@ export default createStore({
         commit("setErrorMessage", e);
       }
     },
-    getAllApartments: async ({ state, commit }) => {
+    getAllApartments: async ({ commit }) => {
       try {
         commit("setStatus", "loading");
         const response = await api.get("/apartments", {
@@ -100,7 +100,7 @@ export default createStore({
         commit("setErrorMessage", e);
       }
     },
-    setApartment: async ({ state, commit }, apartment) => {
+    setApartment: async ({ commit }, apartment) => {
       try {
         commit("setStatus", "loading");
         const response = await api.patch(
@@ -120,7 +120,7 @@ export default createStore({
         commit("setErrorMessage", e);
       }
     },
-    deleteApartment: async ({ state, dispatch, commit }, id: string) => {
+    deleteApartment: async ({ dispatch, commit }, id: string) => {
       try {
         commit("setStatus", "loading");
         const response = await api.delete(`/apartments/${id}`, {
@@ -131,6 +131,27 @@ export default createStore({
         commit("setApartment", response.data);
         dispatch("getAllApartments");
         commit("setStatus", "deleted");
+      } catch (e) {
+        commit("setStatus", "error");
+        commit("setErrorMessage", e);
+      }
+    },
+    createApartment: async ({ dispatch, commit }, apartment) => {
+      try {
+        commit("setStatus", "loading");
+        const response = await api.post(
+          "/apartments",
+          { ...apartment, cityId: "6558aff7d1a28871189039ff" },
+          {
+            headers: {
+              Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            },
+          }
+        );
+        commit("setApartment", response.data);
+        commit("clearCurrentCreateApartment");
+        dispatch("getAllApartments");
+        commit("setStatus", "save");
       } catch (e) {
         commit("setStatus", "error");
         commit("setErrorMessage", e);

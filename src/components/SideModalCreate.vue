@@ -8,22 +8,68 @@
         </button>
       </div>
       <div class="aside__form">
-        <MyInput id="clientName" type="string" label="ФИО клиента" :value="currentApartment.name"
-          set="setCurrentApartmentName" />
-        <MyInput id="phoneNumber" type="tel" label="Номер клиента" :value="currentApartment.clientPhoneNumber"
-          set="setCurrentApartmentPhoneNumber" />
-        <MyInput id="agreement" type="number" label="Номер договора" :value="currentApartment.agreement"
-          set="setCurrentAgreement" />
+        <MyInput
+          id="number"
+          type="number"
+          label="№ Квартиры"
+          :value="currentApartment.number"
+          set="setCurrentApartmentNumber"
+        />
+        <MyInput
+          id="floor"
+          type="number"
+          label="Этаж"
+          :value="currentApartment.floor"
+          set="setCurrentFloor"
+        />
+        <MyInput
+          id="sqm"
+          type="number"
+          label="КВ"
+          :value="currentApartment.sqm"
+          set="setCurrentSqm"
+        />
+        <MyInput
+          id="price"
+          type="number"
+          label="Цена"
+          :value="currentApartment.price"
+          set="setCurrentPrice"
+        />
       </div>
       <div class="aside__radio">
         <p class="aside__text">Статус</p>
         <div class="group">
-          <MyRadio value="Бронь" type="edit" :status="currentApartment.status" />
-          <MyRadio value="Куплено" type="edit" :status="currentApartment.status" />
-          <MyRadio value="Бартер" type="edit" :status="currentApartment.status" />
-          <MyRadio value="Рассроч" type="edit" :status="currentApartment.status" />
-          <MyRadio value="Отмена" type="edit" :status="currentApartment.status" />
-          <MyRadio value="Активна" type="edit" :status="currentApartment.status" />
+          <MyRadio
+            value="Бронь"
+            type="create"
+            :status="currentApartment.status"
+          />
+          <MyRadio
+            value="Куплено"
+            type="create"
+            :status="currentApartment.status"
+          />
+          <MyRadio
+            value="Бартер"
+            type="create"
+            :status="currentApartment.status"
+          />
+          <MyRadio
+            value="Рассроч"
+            type="create"
+            :status="currentApartment.status"
+          />
+          <MyRadio
+            value="Отмена"
+            type="create"
+            :status="currentApartment.status"
+          />
+          <MyRadio
+            value="Активна"
+            type="create"
+            :status="currentApartment.status"
+          />
         </div>
       </div>
     </aside>
@@ -37,19 +83,18 @@
 
 <script setup lang="ts">
 import { useStore } from "vuex";
-import MyInput from "@/components/UI/MyInput.vue";
-import MyRadio from "@/components/UI/MyRadio.vue";
+import MyInput from "./UI/MyInput.vue";
+import MyRadio from "./UI/MyRadio.vue";
 
 const props = defineProps<{ title: string }>();
 const store = useStore();
-const currentApartment = store.state.modal.apartmentChange.currentApartment;
+const currentApartment = store.state.modal.createApartment.currentApartment;
 
 const onClick = () => {
-  store.dispatch("setApartment", currentApartment);
+  store.dispatch("createApartment", currentApartment);
 };
-
 const handleClose = () => {
-  store.commit("toggleIsModalOpen");
+  store.commit("toggleIsCreateModalOpen");
 };
 </script>
 

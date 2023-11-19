@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <UpdateNotify :text="msg" :type="store.state.status" />
+    <UpdateNotify :text="msg" :isVisible="isVisible" :set="changeIsVisible" />
     <AsideNav />
     <main class="main">
       <header class="header">
@@ -8,18 +8,21 @@
       </header>
       <div class="container">
         <CitySelector />
-        <button class="btn">Добавить</button>
+        <button @click="handleCreate" class="btn">Добавить</button>
       </div>
       <FilterApartments />
       <ApartmentsList />
-      <SideModal v-if="store.state.modal.isModalOpened" :title="store.state.modal.apartmentChange.modalType" />
+      <SideModal v-if="store.state.modal.apartmentChange.isModalOpened"
+        :title="store.state.modal.apartmentChange.modalType" />
+      <SideModalCreate v-if="store.state.modal.createApartment.isModalOpened"
+        :title="store.state.modal.createApartment.modalType" />
     </main>
   </div>
 </template>
 
 <script setup lang="ts">
 import { useStore } from "vuex";
-import { onBeforeMount } from "vue";
+import { onBeforeMount, ref } from "vue";
 
 import UpdateNotify from "@/components/UpdateNotify.vue";
 import AsideNav from "@/components/AsideNav.vue";
@@ -27,16 +30,34 @@ import CitySelector from "@/components/CitySelector.vue";
 import FilterApartments from "@/components/FilterApartments.vue";
 import ApartmentsList from "@/components/ApartmentsList.vue";
 import SideModal from "@/components/SideModal.vue";
+import SideModalCreate from "@/components/SideModalCreate.vue";
 
 const store = useStore();
 
-const msg =
-  store.state.status === "updated" ? "Изменения созранены" : "Удален элемент";
+let msg: string;
+if (store.state.status === "updated") {
+  msg = "Изменения созранены";
+} else if (store.state.status === "deleted") {
+  msg = "Удален элемент";
+} else {
+  msg = "Сохранено";
+}
+
+const isVisible = msg !== "" ? ref(true) : ref(false);
+
+const changeIsVisible = () => {
+  console.log("change");
+  isVisible.value = false;
+};
 
 onBeforeMount(() => {
   store.dispatch("getAllCities");
   store.dispatch("getAllApartments");
 });
+
+const handleCreate = () => {
+  store.commit("toggleIsCreateModalOpen");
+};
 </script>
 
 <style scoped>

@@ -1,13 +1,7 @@
 <template>
   <div class="input__wrapper">
     <label :for="props.id" class="label">{{ label }}</label>
-    <input
-      :id="props.id"
-      :type="props.type"
-      :value="props.value"
-      @change="onChange"
-      class="input"
-    />
+    <input :id="props.id" :type="props.type" :value="props.value" @change="onChange" class="input" />
   </div>
 </template>
 
