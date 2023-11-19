@@ -1,5 +1,5 @@
 <template>
-  <div class="notification">
+  <div v-if="isVisible" class="notification">
     <p class="notification__text">{{ props.text }}</p>
     <img src="./../assets/done.svg" alt="Done" />
   </div>
@@ -10,14 +10,14 @@ import { onMounted, ref } from "vue";
 
 const props = defineProps<{
   text: string;
-  isVisible: boolean;
-  set: any;
 }>();
 
+const isVisible = props.text !== "" ? ref(true) : ref(false);
+
 onMounted(() => {
-  if (props.isVisible) {
+  if (isVisible) {
     setTimeout(() => {
-      props.set();
+      isVisible.value = false;
     }, 5000);
   }
 });

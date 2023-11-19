@@ -2,6 +2,7 @@ import { api } from "@/api";
 import router from "@/router";
 import { IApartment } from "@/types/IApartment";
 import { ICity } from "@/types/ICity";
+import { IManager } from "@/types/IManager";
 import { IState } from "@/types/IState";
 import { createStore } from "vuex";
 import modalModule from "./modalModule";
@@ -52,6 +53,9 @@ export default createStore({
     },
     setApartments: (state: IState, apartments: IApartment[]) => {
       state.apartments = apartments;
+    },
+    setManagers: (state: IState, managers: IManager[]) => {
+      state.managers = managers;
     },
   },
   actions: {
@@ -151,6 +155,73 @@ export default createStore({
         commit("setApartment", response.data);
         commit("clearCurrentCreateApartment");
         dispatch("getAllApartments");
+        commit("setStatus", "save");
+      } catch (e) {
+        commit("setStatus", "error");
+        commit("setErrorMessage", e);
+      }
+    },
+    getAllManagers: async ({ commit }) => {
+      try {
+        const response = await api.get("/managers", {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+          },
+        });
+        commit("setManagers", response.data);
+      } catch (e) {
+        commit("setStatus", "error");
+        commit("setErrorMessage", e);
+      }
+    },
+    updateManager: async ({ dispatch, commit }, manager: IManager) => {
+      try {
+        commit("setStatus", "loading");
+        const response = await api.put(
+          "/managers",
+          { ...manager },
+          {
+            headers: {
+              Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            },
+          }
+        );
+        commit("setStatus", "updated");
+        dispatch("getAllManagers");
+      } catch (e) {
+        commit("setStatus", "error");
+        commit("setErrorMessage", e);
+      }
+    },
+    deleteManager: async ({ dispatch, commit }, id: string) => {
+      try {
+        commit("setStatus", "loading");
+        const response = await api.delete(`/managers/${id}`, {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+          },
+        });
+        dispatch("getAllManagers");
+        commit("setStatus", "deleted");
+      } catch (e) {
+        commit("setStatus", "error");
+        commit("setErrorMessage", e);
+      }
+    },
+    createManager: async ({ dispatch, commit }, manager) => {
+      try {
+        commit("setStatus", "loading");
+        const response = await api.post(
+          "/managers",
+          { ...manager },
+          {
+            headers: {
+              Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            },
+          }
+        );
+        commit("clearCurrentCreateManager");
+        dispatch("getAllManagers");
         commit("setStatus", "save");
       } catch (e) {
         commit("setStatus", "error");

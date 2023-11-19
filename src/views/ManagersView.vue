@@ -4,18 +4,20 @@
     <AsideNav />
     <main class="main">
       <header class="header">
-        <h1 class="title">Квартиры</h1>
+        <h1 class="title">Менеджеры</h1>
       </header>
       <div class="container">
-        <CitySelector />
         <button @click="handleCreate" class="btn">Добавить</button>
       </div>
-      <FilterApartments />
-      <ApartmentsList />
-      <SideModal v-if="store.state.modal.apartmentChange.isModalOpened"
-        :title="store.state.modal.apartmentChange.modalType" />
-      <SideModalCreate v-if="store.state.modal.createApartment.isModalOpened"
-        :title="store.state.modal.createApartment.modalType" />
+      <ManagersList />
+      <SideModalEdit
+        v-if="store.state.modal.managerChange.isModalOpened"
+        :title="store.state.modal.managerChange.modalType"
+      />
+      <SideModalCreateManager
+        v-if="store.state.modal.createManager.isModalOpened"
+        :title="store.state.modal.createManager.modalType"
+      />
     </main>
   </div>
 </template>
@@ -24,32 +26,36 @@
 import { useStore } from "vuex";
 import { onBeforeMount, ref } from "vue";
 
-import UpdateNotify from "@/components/UpdateNotify.vue";
-import AsideNav from "@/components/AsideNav.vue";
-import CitySelector from "@/components/CitySelector.vue";
-import FilterApartments from "@/components/FilterApartments.vue";
-import ApartmentsList from "@/components/ApartmentsList.vue";
-import SideModal from "@/components/SideModal.vue";
-import SideModalCreate from "@/components/SideModalCreate.vue";
+import UpdateNotify from "./../components/UpdateNotify.vue";
+import AsideNav from "./../components/AsideNav.vue";
+import ManagersList from "./../components/ManagersList.vue";
+import SideModalEdit from "./../components/SideModalEdit.vue";
+import SideModalCreateManager from "./../components/SideModalCreateManager.vue";
 
 const store = useStore();
 
 let msg: string;
 if (store.state.status === "updated") {
-  msg = "Изменения созранены";
+  msg = "Изменения сохранены";
 } else if (store.state.status === "deleted") {
   msg = "Удален элемент";
 } else {
   msg = "Сохранено";
 }
 
+const isVisible = msg !== "" ? ref(true) : ref(false);
+
+const changeIsVisible = () => {
+  console.log("change");
+  isVisible.value = false;
+};
+
 onBeforeMount(() => {
-  store.dispatch("getAllCities");
-  store.dispatch("getAllApartments");
+  store.dispatch("getAllManagers");
 });
 
 const handleCreate = () => {
-  store.commit("toggleIsCreateModalOpen");
+  store.commit("toggleIsCreateManagerModalOpen");
 };
 </script>
 
@@ -74,7 +80,7 @@ const handleCreate = () => {
 
 .container {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   padding: 30px;
 }

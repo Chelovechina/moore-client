@@ -3,6 +3,7 @@ import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import Login from "../views/LoginView.vue";
 import ApartmentView from "../views/ApartmentView.vue";
+import ManagersView from "../views/ManagersView.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -17,6 +18,14 @@ const routes: Array<RouteRecordRaw> = [
     path: "/login",
     name: "Login",
     component: Login,
+  },
+  {
+    path: "/managers",
+    name: "Managers",
+    component: ManagersView,
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: "/apartments",

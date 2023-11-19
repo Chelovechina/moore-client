@@ -1,6 +1,7 @@
 import { ICity } from "./ICity";
 import { IApartment } from "./IApartment";
 import { IModalModule } from "./IModalModule";
+import { IManager } from "./IManager";
 
 export interface IState {
   modal: IModalModule;
@@ -14,4 +15,5 @@ export interface IState {
   sort: string[];
   currentSort: string;
   apartments: IApartment[];
+  managers: IManager[];
 }
